@@ -5,7 +5,9 @@ project(nadicpp VERSION 1.0.0 LANGUAGES CXX)
 add_library(nadicpp INTERFACE)
 add_library(nadicpp::nadicpp ALIAS nadicpp)
 
-add_subdirectory(node-agnostic-datastream-interface)
+if(NOT TARGET nadi::nadi)
+    add_subdirectory(node-agnostic-datastream-interface)
+endif()
 target_link_libraries(nadicpp INTERFACE nadi::nadi)
 
 # Specify include directories
