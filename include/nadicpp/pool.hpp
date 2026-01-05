@@ -43,10 +43,11 @@ namespace nadicpp{
         public:
         message allocate(){
             nadi_message* m = msg_pool_.allocate();
+            m->data_length = 0;
             m->data = msg_data_pool_.allocate();
             m->user = this;
             m->free = cb;
-            m->data_length = 0;
+            return message(m);
         }
         void free(nadi_message* m){
             msg_data_pool_.free(static_cast<char_buf_t*>(m->data));

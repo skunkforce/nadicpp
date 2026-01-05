@@ -2,6 +2,9 @@
 #define NADICPP_MESSAGE_HPP
 #include "nadi/nadi.h"
 #include "address.hpp"
+#include "nlohmann/json.hpp"
+#include <optional>
+#include <string_view>
 namespace nadicpp{
 class message{
     nadi_message * msg = nullptr;
@@ -51,6 +54,22 @@ class message{
             msg->node = a.node;
             msg->channel = a.channel;
         }
+    }
+
+    bool is_json_format(){
+        auto meta = nlohmann::json::parse(msg->meta);
+        return meta["format"] == "json";
+    }
+    std::optional<nlohmann::json> to_json(){
+        if(is_json_format()){
+            auto pdata = (const char*)msg->data;
+            auto out = nlohmann::json::object();
+            out["meta"] = nlohmann::json::parse(msg->meta);
+            auto sv = std::string_view(pdata,pdata+msg->data_length);
+            out["data"] = nlohmann::json::parse(sv);
+            return out;
+        }
+        return {};
     }
 };
 }
