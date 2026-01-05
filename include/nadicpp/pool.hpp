@@ -4,6 +4,8 @@
 #include <vector>
 #include <ranges>
 #include <algorithm>
+#include <nadi/nadi.h>
+
 namespace nadicpp{
     template<typename T>
     class pool{
@@ -25,6 +27,30 @@ namespace nadicpp{
         }
         void free(T* p){
             free_stack_.push_back(p);
+        }
+    };
+
+    //this allocator will allocate messages without setting the type string pointer
+    //it is intended to be used in contexts where the type is fixed.
+    template<nadi_free_callback cb, std::size_t Buff_Size>
+    class message_allocator{
+        struct char_buf_t{
+            char c[Buff_Size];
+        };
+
+        nadicpp::pool<nadi_message> msg_pool_;
+        nadicpp::pool<char_buf_t> msg_data_pool_;
+        public:
+        message allocate(){
+            nadi_message* m = msg_pool_.allocate();
+            m->data = msg_data_pool_.allocate();
+            m->user = this;
+            m->free = cb;
+            m->data_length = 0;
+        }
+        void free(nadi_message* m){
+            msg_data_pool_.free(static_cast<char_buf_t*>(m->data));
+            msg_pool_.free(m);
         }
     };
 
