@@ -14,7 +14,7 @@ extern "C" {                                                               \
     {                                                                      \
         try{                                                               \
             *node = new WRAPPED_CLASS(nadicpp::callback(cb, cb_ctx),       \
-                                    std::string_view(init));               \
+                                    nlohmann::json::parse(init));          \
             return NADI_OK;                                                \
         }                                                                  \
         catch(...){                                                        \
