@@ -41,6 +41,7 @@ namespace nadicpp{
         nadicpp::pool<nadi_message> msg_pool_;
         nadicpp::pool<char_buf_t> msg_data_pool_;
         public:
+        message_allocator(std::size_t prealloc = 0):msg_pool_(prealloc),msg_data_pool_(prealloc){}
         message allocate(){
             nadi_message* m = msg_pool_.allocate();
             m->data_length = 0;

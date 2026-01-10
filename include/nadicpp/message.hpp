@@ -55,6 +55,11 @@ class message{
             msg->channel = a.channel;
         }
     }
+
+    operator address(){
+        return {msg->node,msg->channel};
+    }
+    
     nlohmann::json meta(){
         return nlohmann::json::parse(msg->meta);
     }
