@@ -55,11 +55,15 @@ class message{
             msg->channel = a.channel;
         }
     }
+    nlohmann::json meta(){
+        return nlohmann::json::parse(msg->meta);
+    }
 
     bool is_json_format(){
-        auto meta = nlohmann::json::parse(msg->meta);
-        return meta["format"] == "json";
+        auto m = meta();
+        return m["format"] == "json";
     }
+    
     std::optional<nlohmann::json> to_json(){
         if(is_json_format()){
             auto pdata = (const char*)msg->data;
@@ -71,6 +75,7 @@ class message{
         }
         return {};
     }
+
 };
 }
 #endif
