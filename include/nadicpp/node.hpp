@@ -45,7 +45,8 @@ namespace nadicpp{
         lib.dll = dlopen(path.c_str(), RTLD_LAZY);
         if (!lib.dll) {
             //TODO handle error
-            return false;
+            lib.dll = nullptr;
+            return lib;
         }
     #endif
 
