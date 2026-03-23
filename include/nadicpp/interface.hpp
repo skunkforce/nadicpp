@@ -31,7 +31,7 @@ extern "C" {                                                               \
     DLL_EXPORT nadi_status nadi_send(                                      \
         nadi_message* message,                                             \
         nadi_node_handle node,                                             \
-        unsigned int target_channel)                                       \
+        uint64_t target_channel)                                           \
     {                                                                      \
         return static_cast<WRAPPED_CLASS*>(node)->send(                    \
             nadicpp::message(message), target_channel);                    \

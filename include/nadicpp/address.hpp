@@ -5,7 +5,7 @@
 namespace nadicpp{
     struct address{
         nadi_node_handle node;
-        unsigned channel;
+        uint64_t channel;
         auto operator<=>(const address& other) const = default;
     };
 }

@@ -14,7 +14,7 @@ namespace nadicpp{
     // Function pointer types for DLL functions
     using init_pt = nadi_status (*)(nadi_node_handle* instance, nadi_receive_callback, void*, char*);
     using deinit_pt = nadi_status (*)(nadi_node_handle instance);
-    using send_pt = nadi_status (*)(nadi_message* message, nadi_node_handle instance,unsigned int target_channel);
+    using send_pt = nadi_status (*)(nadi_message* message, nadi_node_handle instance, uint64_t target_channel);
     using handle_events_pt = nadi_status (*)(nadi_node_handle);
     using descriptor_pt = nadi_status (*)(char*,size_t*);
 

@@ -4,7 +4,7 @@
 #include <nlohmann/json.hpp>
 
 namespace nadicpp::helpers{
-    inline nadi_message* heap_allocate_json_message(nadi_node_handle node, unsigned channel, const nlohmann::json& data, nadi_free_callback free,void* usr = nullptr){
+    inline nadi_message* heap_allocate_json_message(nadi_node_handle node, uint64_t channel, const nlohmann::json& data, nadi_free_callback free,void* usr = nullptr){
         auto msg = new nadi_message;
         const char meta[] = R"({"format":"json"})";
         auto sd = data.dump();
@@ -38,7 +38,7 @@ namespace nadicpp::helpers{
         return heap_allocate_json_message(0,0xF000,data,free);
     }
 
-    inline nadi_message* heap_allocate_message_from_JSON(const nlohmann::json& obj, uint64_t node, unsigned channel){
+    inline nadi_message* heap_allocate_message_from_JSON(const nlohmann::json& obj, uint64_t node, uint64_t channel){
         if (!obj.contains("meta") || !obj["meta"].is_object() || !obj.contains("data")){
             return nullptr;
         }
@@ -50,9 +50,7 @@ namespace nadicpp::helpers{
         else if(data.is_binary()){
 
         }
-        else {
-            return nullptr;
-        }
+        return nullptr;
     }
 }
 
